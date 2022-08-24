@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookings-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookings-app
+  template:
+    metadata:
+      labels:
+        app: bookings-app
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": windows
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: bookings-app
+      containers:
+      - name: bookings-app
+        image: mstdtcbookingsuqc6kk.azurecr.io/bookings-app:v8
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 2Gi
+        volumeMounts:
+        - name: connection-strings-config
+          mountPath: C:\inetpub\wwwroot\config
+      volumes:
+        - name: connection-strings-config
+          secret:
+            secretName: connection-strings-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookings-app-svc
+spec:
+  selector:
+    app: bookings-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bookings-app-ingress
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/cookie-based-affinity: "true"
+    appgw.ingress.kubernetes.io/request-timeout: "600"
+    appgw.ingress.kubernetes.io/health-probe-path: "/trip/create"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bookings-app-svc
+            port:
+              number: 80

@@ -1,0 +1,81 @@
+﻿@model MSDTCApp.Models.TripReservation
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2 class="text-center">Plan Your Trip</h2>
+@using (Html.BeginForm())
+{
+
+
+    <table class="table table-condensed table-striped table-bordered">
+        <tr>
+            <td>
+                <table class="table table-condensed table-striped table-bordered">
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            The Flight Booking Info
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Flight Id:
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.Flight.FlightId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Flight Name:
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.Flight.FilghtName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Flight Number:
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.Flight.Number)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table class="table table-condensed table-striped table-bordered">
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            The Hotel Booking Info
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Booking Id:
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.Hotel.BookingId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Customer Name:
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.Hotel.Name)
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="text-center">
+                <input type="submit" value="Save Trip" />
+            </td>
+        </tr>
+    </table>
+
+}
