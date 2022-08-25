@@ -3,7 +3,7 @@
  This repository showcases the use of [Elastic Transactions](https://docs.microsoft.com/en-us/azure/azure-sql/database/elastic-transactions-overview?view=azuresql) in an Azure
  SQL Database, that allows an application to run transactions against several databases without the need to use MSDTC which can be trick, specially with containers.
 
- The sample app is a .net framework application that runs on Windows nodes on AKS. It's a Flight and Hotel Booking application that spans a transaction in two SQL Databases using [System.Transactions](https://docs.microsoft.com/en-us/dotnet/api/system.transactions?view=net-6.0) coordinated by [Azure SQL Database](https://docs.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview?view=azuresql) instead of MSDTC. 
+ The sample app is a .net framework application that runs on Windows nodes on AKS. It's a Flight and Hotel Booking application that spans a transaction over two SQL Databases using [System.Transactions](https://docs.microsoft.com/en-us/dotnet/api/system.transactions?view=net-6.0) coordinated by [Azure SQL Database](https://docs.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview?view=azuresql) instead of MSDTC. 
 
 
 ### Architecture
