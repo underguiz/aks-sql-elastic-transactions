@@ -23,7 +23,7 @@ spec:
             app: bookings-app
       containers:
       - name: bookings-app
-        image: mstdtcbookingsuqc6kk.azurecr.io/bookings-app:v8
+        image: <acr_name>.azurecr.io/bookings-app:v1
         imagePullPolicy: Always
         ports:
         - containerPort: 80
