@@ -3,7 +3,7 @@
  This repository showcases the use of [Elastic Transactions](https://docs.microsoft.com/en-us/azure/azure-sql/database/elastic-transactions-overview?view=azuresql) in an Azure
  SQL Database, that allows an application to run transactions against several databases without the need to use MSDTC which can be trick, specially with containers.
 
- The sample app is a .net framework application that runs on Windows nodes on AKS.
+ The sample app is a .net framework application that runs on Windows nodes on AKS. It's a Flight and Hotel Booking application that spans a transaction in two SQL Databases using [System.Transactions](https://docs.microsoft.com/en-us/dotnet/api/system.transactions?view=net-6.0) coordinated by [Azure SQL Database](https://docs.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview?view=azuresql) instead of MSDTC. 
 
 
 ### Architecture
@@ -52,9 +52,23 @@ $ az acr build -r <acr_name> --platform windows --image bookings-app:v1 .
 $ kubectl apply -f bookings-app.yaml
 ```
 
-Get the Ingress IP Address and access it from a web browser.
+Get the Ingress IP Address and access it from a web browser (http://ip_address/trip/create).
 ```
 $ kubectl get ingress bookings-app-ingress
+```
+
+From the mssql-tools pod, query the Hotel and Flight databases to see that the information was added to both databases.
+
+```
+$ kubectl attach -ti mssql-tools
+# sqlcmd -S <sql_server_fqdn> -U bookingsapp -d Flight
+1 > select * from Flight
+2 > go
+1 > exit
+# sqlcmd -S <sql_server_fqdn> -U bookingsapp -d Hotel
+1 > select * from Hotel
+2 > go
+1 > exit
 ```
 
 ### Docs
